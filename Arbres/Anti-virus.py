@@ -1,44 +1,44 @@
 import sys
 
-def hauteurNoeud(arbre, noeud):
-    p = 0
-    while noeud != 0:
-        noeud = arbre[noeud-1]
-        p += 1
-    return p
+def node_height(tree, node):
+    height = 0
+    while node != 0:
+        node = tree[node - 1]
+        height += 1
+    return height
 
-def parcoursRecursif(phrase, combinaisons, position):
-    if position >= len(phrase):
+def recursive_traversal(pattern, combinations, position):
+    if position >= len(pattern):
         return
     
-    for r in range(len(combinaisons)):
-        if phrase[position] == "?":
+    for r in range(len(combinations)):
+        if pattern[position] == "?":
             for i in range(1, 10):
-                combinaisons.append(combinaisons[r]+str(i))
+                combinations.append(combinations[r] + str(i))
             if position != 0:
-                combinaisons[r] += "0"
+                combinations[r] += "0"
             else:
-                combinaisons.pop(r)
+                combinations.pop(r)
         else:
-            combinaisons[r] += phrase[position]
+            combinations[r] += pattern[position]
     
-    parcoursRecursif(phrase, combinaisons, position + 1)
-    return combinaisons
+    recursive_traversal(pattern, combinations, position + 1)
+    return combinations
 
 def main():
     N = int(sys.stdin.readline())
-    phrase = list(map(int, sys.stdin.readline().split()))
-    recherche = sys.stdin.readline()
-    combinaisons = [""]
-    combinaisons = parcoursRecursif(recherche, combinaisons, 0)
-    possibilitesTPP = [[] for _ in range(N+1)]
+    pattern = list(map(int, sys.stdin.readline().split()))
+    search_pattern = sys.stdin.readline()
+    combinations = [""]
+    combinations = recursive_traversal(search_pattern, combinations, 0)
+    possibilities_tpp = [[] for _ in range(N + 1)]
     
-    for i in combinaisons:
-        if int(i) <= len(phrase):
-            possibilitesTPP[hauteurNoeud(phrase, int(i))].append(int(i))
+    for i in combinations:
+        if int(i) <= len(pattern):
+            possibilities_tpp[node_height(pattern, int(i))].append(int(i))
     
-    for possibilites in possibilitesTPP:
-        for possibilite in possibilites:
-            sys.stdout.write(str(possibilite)+" ")
+    for possibilities in possibilities_tpp:
+        for possibility in possibilities:
+            sys.stdout.write(str(possibility) + " ")
 
 main()

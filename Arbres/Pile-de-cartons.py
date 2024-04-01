@@ -1,15 +1,15 @@
 import sys
 
-nbCartons = int(sys.stdin.readline())
-arbre = []
+num_boxes = int(sys.stdin.readline())
+tree = []
 
-for i in range(nbCartons+1):
-    arbre.append(list(map(int, sys.stdin.readline().split()))[1:])
+for _ in range(num_boxes + 1):
+    tree.append(list(map(int, sys.stdin.readline().split()))[1:])
 
-def parcourirTotaliteArbre(arbreGlobal, arbrePetit):
-    for noeud in arbrePetit:
-        sys.stdout.write("A "+str(noeud)+"\n")
-        parcourirTotaliteArbre(arbreGlobal, arbreGlobal[noeud])
-        sys.stdout.write("R "+str(noeud)+"\n")
+def traverse_entire_tree(global_tree, subtree):
+    for node in subtree:
+        sys.stdout.write("A " + str(node) + "\n")
+        traverse_entire_tree(global_tree, global_tree[node])
+        sys.stdout.write("R " + str(node) + "\n")
 
-parcourirTotaliteArbre(arbre, arbre[0])
+traverse_entire_tree(tree, tree[0])

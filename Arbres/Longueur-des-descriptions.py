@@ -1,28 +1,28 @@
 import sys
 
-def construire_arbre(produits):
-    arbre = {0: []}
-    for produit, container in enumerate(produits, 1):
-        if container not in arbre:
-            arbre[container] = []
-        arbre[container].append(produit)
-    return arbre
+def build_tree(products):
+    tree = {0: []}
+    for product, container in enumerate(products, 1):
+        if container not in tree:
+            tree[container] = []
+        tree[container].append(product)
+    return tree
 
-def hauteur_arbre(arbre, noeud):
-    pile = [(noeud, 1)]
-    hauteur_max = 0
-    while pile:
-        noeud, hauteur = pile.pop()
-        if noeud in arbre:
-            for fils in arbre[noeud]:
-                pile.append((fils, hauteur + 1))
-        hauteur_max = max(hauteur_max, hauteur)
-    return hauteur_max
+def tree_height(tree, node):
+    stack = [(node, 1)]
+    max_height = 0
+    while stack:
+        node, height = stack.pop()
+        if node in tree:
+            for child in tree[node]:
+                stack.append((child, height + 1))
+        max_height = max(max_height, height)
+    return max_height
 
 def main():
     sys.stdin.readline()
-    produits = list(map(int, sys.stdin.readline().split()))
-    arbre = construire_arbre(produits)
-    print(hauteur_arbre(arbre, 0)-1)
+    products = list(map(int, sys.stdin.readline().split()))
+    tree = build_tree(products)
+    print(tree_height(tree, 0) - 1)
 
 main()
