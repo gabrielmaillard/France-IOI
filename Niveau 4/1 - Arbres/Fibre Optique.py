@@ -1,45 +1,45 @@
 import sys
 from collections import deque
 
-def max_deconnectes(arcs, nb_ordis):
-    voisins = [[] for _  in range(nb_ordis)]
-    cables_connectes = [0] * nb_ordis
-    pc_connectes = [1] * nb_ordis
+def max_disconnected(edges, num_computers):
+    neighbors = [[] for _ in range(num_computers)]
+    connected_cables = [0] * num_computers
+    connected_pcs = [1] * num_computers
 
-    # Construction de la liste d'adjacence
-    for i in range(nb_ordis - 1):
-        ordi, voisin = map(int, arcs[i].split())
-        
-        voisins[ordi].append(voisin)
-        voisins[voisin].append(ordi)
-        
-        cables_connectes[ordi] += 1
-        cables_connectes[voisin] += 1
-    
-    feuilles = deque()
+    # Building the adjacency list
+    for i in range(num_computers - 1):
+        computer, neighbor = map(int, edges[i].split())
 
-    # Récupération des feuilles
-    for ordi in range(nb_ordis):
-        if cables_connectes[ordi] == 1:
-            feuilles.append(ordi)
-    
-    maximum_deconnectes = 0
-    
-    # Calcul du maximum
-    while feuilles:
-        ordi = feuilles.popleft()
-        maximum_deconnectes = max(maximum_deconnectes, min(pc_connectes[ordi], nb_ordis - pc_connectes[ordi]))
+        neighbors[computer].append(neighbor)
+        neighbors[neighbor].append(computer)
 
-        for voisin in voisins[ordi]:
-            cables_connectes[voisin] -= 1
-            pc_connectes[voisin] += pc_connectes[ordi]
+        connected_cables[computer] += 1
+        connected_cables[neighbor] += 1
 
-            if cables_connectes[voisin] == 1:
-                feuilles.append(voisin)
-    
-    return maximum_deconnectes
+    leaves = deque()
+
+    # Gathering leaves
+    for computer in range(num_computers):
+        if connected_cables[computer] == 1:
+            leaves.append(computer)
+
+    max_disconnected = 0
+
+    # Calculating the maximum
+    while leaves:
+        computer = leaves.popleft()
+        max_disconnected = max(max_disconnected, min(connected_pcs[computer], num_computers - connected_pcs[computer]))
+
+        for neighbor in neighbors[computer]:
+            connected_cables[neighbor] -= 1
+            connected_pcs[neighbor] += connected_pcs[computer]
+
+            if connected_cables[neighbor] == 1:
+                leaves.append(neighbor)
+
+    return max_disconnected
 
 N = int(input())
-arcs = [arc.strip() for arc in sys.stdin]
+edges = [edge.strip() for edge in sys.stdin]
 
-sys.stdout(str(max_deconnectes(arcs, N)))
+sys.stdout.write(str(max_disconnected(edges, N)))
