@@ -7,14 +7,14 @@ def acceptable(pL):
         return False
     return True
 
-def check_word(mot):
-    if not acceptable(mot[0]):
+def check_word(word):
+    if not acceptable(word[0]):
         return "NO"
     
-    for lettre in mot:
+    for letter in word:
         if not (
-            acceptable(lettre)
-            or lettre.isdigit()
+            acceptable(letter)
+            or letter.isdigit()
         ):
             return "NO"
     
